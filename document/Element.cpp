@@ -4,11 +4,10 @@
 
 #include "Element.h"
 
-void Element::setValue(std::string value, bool isAttribute = false) {
+void Element::setValue(std::string value) {
     this->value = std::move(value);
     this->resetChildren();
     this->hasValue = true;
-    this->attribute = isAttribute;
 
 }
 
@@ -23,8 +22,8 @@ bool Element::addChild(std::shared_ptr<Element> child) {
 
 }
 
-Element::Element(const std::string &name, const std::string &value, bool isAttribute) :
-name(name), value(value), hasValue(true), attribute(isAttribute) {}
+Element::Element(const std::string &name, const std::string &value) :
+name(name), value(value), hasValue(true) {}
 
 Element::Element(const std::string &name) : name(name) {}
 
@@ -60,12 +59,12 @@ void Element::setHasValue(bool hasValue) {
     Element::hasValue = hasValue;
 }
 
-bool Element::isAttribute() const {
-    return attribute;
+void Element::addAttribute(const std::string &name, const std::string &value) {
+    Element::attributes.emplace_back(std::make_pair(name,value));
 }
 
-void Element::setIsAttribute(bool isAttribute) {
-    Element::attribute = isAttribute;
+const Attributes &Element::getAttributes() const {
+    return attributes;
 }
 
 

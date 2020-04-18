@@ -14,15 +14,16 @@
 class Element;
 
 using Children = std::vector<std::shared_ptr<Element>>;
+using Attributes = std::vector<std::pair<std::string, std::string>>;
 class Element {
 public:
-    void setValue(std::string value, bool isAttribute);
+    void setValue(std::string value);
     bool addChild(std::shared_ptr<Element> child);
 
 
     Element(const std::string &name);
 
-    Element(const std::string &name, const std::string &value, bool isAttribute);
+    Element(const std::string &name, const std::string &value);
 
     const std::string &getName() const;
 
@@ -40,16 +41,16 @@ public:
 
     void setHasValue(bool hasValue);
 
-    bool isAttribute() const;
+    void addAttribute(const std::string& name, const std::string& value);
 
-    void setIsAttribute(bool isAttribute);
+    const Attributes &getAttributes() const;
 
 private:
     std::string name;
     std::string value;
     Children children;
     bool hasValue; //if field has a value it cannot have children
-    bool attribute; // <title lang="en"> - lang is attribute - must be handled different than normal field
+    Attributes attributes; // <title lang="en"> - lang is attribute - must be handled different than normal field
 
     inline void resetChildren()
     {
