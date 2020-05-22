@@ -4,15 +4,8 @@
 
 #include "Element.h"
 
-void Element::setValue(std::string value) {
-    this->value = std::move(value);
-    this->resetChildren();
-    this->hasValue = true;
 
-}
-
-
-bool Element::addChild(std::shared_ptr<Element> child) {
+void Element::addChild(std::shared_ptr<Element> child) {
     this->children.emplace_back(std::move(child));
     if(this->hasValue)
     {

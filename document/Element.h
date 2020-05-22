@@ -15,12 +15,13 @@ class Element;
 
 using Children = std::vector<std::shared_ptr<Element>>;
 using Attributes = std::vector<std::pair<std::string, std::string>>;
+using ElementPtr = std::shared_ptr<Element>;
 class Element {
 public:
-    void setValue(std::string value);
-    bool addChild(std::shared_ptr<Element> child);
+    void addChild(std::shared_ptr<Element> child);
 
 
+    Element() = default;
     Element(const std::string &name);
 
     Element(const std::string &name, const std::string &value);

@@ -11,6 +11,9 @@
 class Document {
 public:
     void addNewElement(Element e);
+
+    void setElements(const std::vector<Element> &elements);
+
 private:
     std::vector<Element> elements;
 
