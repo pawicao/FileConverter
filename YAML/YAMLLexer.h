@@ -7,7 +7,7 @@
 
 #include <list>
 #include <fstream>
-#include "YAML_tokens.h"
+#include "YAMLToken.h"
 
 namespace YAML {
     class YAMLLexer {
@@ -20,10 +20,9 @@ namespace YAML {
 
     private:
         YAMLState state;
-        bool m_eof;
-        std::ifstream m_is;
-        std::list<unsigned char> m_lookahead;
-
+        bool eof = false;
+        std::ifstream is;
+        std::list<unsigned char> lookahead;
 
     };
 }
