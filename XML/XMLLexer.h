@@ -18,7 +18,7 @@ namespace XML
 
     private:
         XMLState state;
-        bool m_eof;
+        bool m_eof = false;
         std::ifstream m_is;
         std::list<unsigned char> m_lookahead;
 

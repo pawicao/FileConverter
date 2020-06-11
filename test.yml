@@ -1,0 +1,16 @@
+- martin:
+     name: Martin D'vloper #Komentarz
+     job:
+     skills:
+       - python
+       - perl
+       - pascal
+- tabitha:
+     name: Tabitha Bitumen
+     job: Developer
+     jobicon: "Dwuliniowy
+     tekst"
+     skills:
+       - lisp
+       - fortran
+       - erlang

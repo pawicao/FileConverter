@@ -179,6 +179,6 @@ namespace XML
 
     XMLLexer::XMLLexer(const std::string& filename)
     {
-        m_is = std::ifstream(ROOT+filename, std::ifstream::in);
+        m_is = std::ifstream(filename, std::ifstream::in);
     }
 }

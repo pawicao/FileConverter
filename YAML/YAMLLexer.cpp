@@ -22,28 +22,30 @@ namespace YAML {
     }
 
     unsigned char YAMLLexer::nextChar() {
+        unsigned char c;
         if (lookahead.empty()) {
-            unsigned char c = is.get();
+            c = is.get();
             if (is.eof()) {
                 eof = true;
             }
-            return c;
         } else {
-            unsigned char c = lookahead.front();
+            c = lookahead.front();
             lookahead.pop_front();
             eof = false;
-            return c;
         }
+        //std::cout<<"Next char gives:"<<c<<"<--"<<std::endl;
+        return c;
     }
 
     YAMLToken YAMLLexer::nextToken() {
         if(state == END) {
+            //std::cout<<"Returning "<<"INVALID TOKEN"<<std::endl;
             return YAMLToken();
         }
         state = START;
         std::string value;
 
-        while(1) {
+        while(true) {
             switch(state) {
                 case START: {
                     unsigned char c = nextChar();
@@ -78,29 +80,40 @@ namespace YAML {
                         state = SPACE;
                     }
                     else if(isalpha(c) || isdigit(c) || c == '.') {
+                        value += c;
                         state = PLAIN_SCALAR_START;
                     }
                     break;
                 }
                 case END: {
+                    std::cout<<"Returning "<<"INVALID TOKEN"<<std::endl;
                     return YAMLToken();
                 }
                 case HYPHEN: {
+                    std::cout<<"Returning "<<"HYPHEN TOKEN"<<std::endl;
                     return YAMLToken(HYPHEN_TOKEN, "");
                 }
                 case MAPPER: {
+                    std::cout<<"Returning "<<"MAPPER TOKEN"<<std::endl;
                     return YAMLToken(MAPPER_TOKEN, "");
                 }
                 case HASH: {
+                    std::cout<<"Returning "<<"COMMENT TOKEN"<<std::endl;
                     return YAMLToken(COMMENT_TOKEN, "");
                 }
                 case EOL: {
+                    std::cout<<"Returning "<<"EOL TOKEN"<<std::endl;
                     return YAMLToken(EOL_TOKEN, "");
                 }
                 case PLAIN_SCALAR_START: {
                     unsigned char c = nextChar();
                     if (c == '\n' || eof) {
                         state = PLAIN;
+                        lookahead.push_back(c);
+                    }
+                    else if(c == ':' || c == '#') {
+                        state = PLAIN;
+                        lookahead.push_back(c);
                     }
                     else if (c != '\r') {
                         value += c;
@@ -116,7 +129,12 @@ namespace YAML {
                     else if (c == '"') {
                         state = QUOTED;
                     }
-                    else {
+                    else if (c != '\r') {
+                        if(!value.empty() && value.back() == '\n') {
+                            while(c == ' ') {
+                                c = nextChar();
+                            }
+                        }
                         value += c;
                     }
                     break;
@@ -130,12 +148,18 @@ namespace YAML {
                     else if (c == '\'') {
                         state = QUOTED;
                     }
-                    else {
+                    else if (c != '\r') {
+                        if(!value.empty() && value.back() == '\n') {
+                            while(c == ' ') {
+                                c = nextChar();
+                            }
+                        }
                         value += c;
                     }
                     break;
                 }
                 case SPACE: {
+                    std::cout<<"Returning "<<"INDENT TOKEN"<<std::endl;
                     return YAMLToken(INDENT_TOKEN, "");
                 }
                 case FOLDED_BLOCK_SCALAR_START: {
@@ -148,17 +172,22 @@ namespace YAML {
                 }
                 case PLAIN: {
                     if(tolow(value) == "true") {
-                        return YAMLToken(TRUE_TOKEN, "");
+                        std::cout<<"Returning "<<"TRUE TOKEN"<<std::endl;
+                        return YAMLToken(TRUE_TOKEN, "true");
                     }
                     if(tolow(value) == "false") {
-                        return YAMLToken(FALSE_TOKEN, "");
+                        std::cout<<"Returning "<<"FALSE TOKEN"<<std::endl;
+                        return YAMLToken(FALSE_TOKEN, "false");
                     }
                     if(tolow(value) == "null") {
-                        return YAMLToken(YNULL_TOKEN, "");
+                        std::cout<<"Returning "<<"YNULL TOKEN"<<std::endl;
+                        return YAMLToken(YNULL_TOKEN, "null");
                     }
+                    std::cout<<"Returning "<<"PLAIN SCALAR TOKEN: "<<value<<std::endl;
                     return YAMLToken(PLAIN_SCALAR_TOKEN, value);
                 }
                 case QUOTED: {
+                    std::cout<<"Returning "<<"QUOTED SCALAR TOKEN"<<std::endl;
                     return YAMLToken(QUOTED_SCALAR_TOKEN, value);
                 }
                 default: {
