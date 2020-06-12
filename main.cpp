@@ -5,29 +5,22 @@
 #include "XML/XMLParser.h"
 #include "YAML/YAMLLexer.h"
 #include "YAML/YAMLParser.h"
+#include "XML/XMLGenerator.h"
 
 int main() {
-    std::shared_ptr<XML::XMLLexer> lexer(new XML::XMLLexer("test.xml"));
+    std::shared_ptr<XML::XMLLexer> lexer(new XML::XMLLexer(XML::ROOT+"test.xml"));
     XML::XMLParser parser(lexer);
 
     Document test = parser.parse();
-    for(auto & element : test.elements) {
-        std::cout<<element.getName()<<": "<<element.getValue()<<std::endl;
-        for(auto & child : element.getChildren()) {
-            std::cout<<" "<<child->getName()<<": "<<child->getValue()<<std::endl;
-        }
-    }
 
-    std::shared_ptr<YAML::YAMLLexer> lexerY(new YAML::YAMLLexer("test.yml"));
+    XML::XMLGenerator generator{};
+    std::cout<<generator.GenerateXml(test);
+
+    std::shared_ptr<YAML::YAMLLexer> lexerY(new YAML::YAMLLexer(XML::ROOT+"test.yml"));
     YAML::YAMLParser parserY(lexerY);
 
     Document test2 = parserY.parse();
-    for(auto & element : test2.elements) {
-        std::cout<<element.getName()<<": "<<element.getValue()<<std::endl;
-        for(auto & child : element.getChildren()) {
-            std::cout<<" "<<child->getName()<<": "<<child->getValue()<<std::endl;
-        }
-    }
 
+    std::cout<<generator.GenerateXml(test2);
     return 0;
 }

@@ -38,7 +38,7 @@ public:
 
     void setChildren(Children children);
 
-    bool isHasValue() const;
+    bool hasValueFun() const;
 
     void setHasValue(bool hasValue);
 

@@ -13,10 +13,10 @@ public:
     void addNewElement(Element e);
 
     void setElements(const std::vector<Element> &elements);
+    const std::vector<Element> &getElements() const;
 
 private:
     std::vector<Element> elements;
-
 };
 
 

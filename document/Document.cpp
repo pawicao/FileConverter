@@ -12,3 +12,8 @@ void Document::setElements(const std::vector<Element> &elements)
 {
     Document::elements = elements;
 }
+
+const std::vector<Element> &Document::getElements() const
+{
+    return elements;
+}
