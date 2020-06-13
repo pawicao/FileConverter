@@ -24,7 +24,7 @@ namespace YAML {
             if(parent_indentation == -1 && last_seq_mode) {
                 ElementPtr el_to_add(new Element("root"));
                 if(element->getChildren().empty()) {
-                    if(element->isHasValue()) {
+                    if(element->hasValueFun()) {
                         ElementPtr child(new Element(element->getName(), element->getValue()));
                         el_to_add->addChild(child);
                     }
@@ -44,7 +44,7 @@ namespace YAML {
                     el->setName(el->getName().substr(3, el->getName().size()));
                     ElementPtr el_to_add(new Element(element->getName()));
                     if(el->getChildren().empty()) {
-                        if(el->isHasValue()) {
+                        if(el->hasValueFun()) {
                             el_to_add->addChild(el);
                         }
                         else {
