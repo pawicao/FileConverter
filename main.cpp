@@ -6,32 +6,38 @@
 #include "YAML/YAMLLexer.h"
 #include "YAML/YAMLParser.h"
 #include "XML/XMLGenerator.h"
-
-void printMeAndChildren(Element element, std::string preset) {
-    preset += "  ";
-    std::cout<<preset<<element.getName()<<": "<<element.getValue()<<std::endl;
-    for(const std::shared_ptr<Element>& child : element.getChildren()) {
-        printMeAndChildren(*child, preset);
-    }
-}
+#include "YAML/YAMLGenerator.h"
 
 int main() {
-    std::shared_ptr<XML::XMLLexer> lexer(new XML::XMLLexer(XML::ROOT+"test.xml"));
-    XML::XMLParser parser(lexer);
+    XML::XMLGenerator xml_generator{};
+    YAML::YAMLGenerator yaml_generator{};
 
-    Document test = parser.parse();
+    std::shared_ptr<XML::XMLLexer> xml_lexer(new XML::XMLLexer(XML::ROOT+"test.xml"));
+    std::shared_ptr<YAML::YAMLLexer> yaml_lexer(new YAML::YAMLLexer(XML::ROOT+"test.yml"));
 
-    XML::XMLGenerator generator{};
-    std::cout<<generator.GenerateXml(test);
+    XML::XMLParser xml_parser(xml_lexer);
+    YAML::YAMLParser yaml_parser(yaml_lexer);
 
-    std::shared_ptr<YAML::YAMLLexer> lexerY(new YAML::YAMLLexer(XML::ROOT+"test.yml"));
-    YAML::YAMLParser parserY(lexerY);
+    Document test = xml_parser.parse();
+    Document test2 = yaml_parser.parse();
 
-    Document test2 = parserY.parse();
-    for(auto & element : test2.getElements()) {
-        printMeAndChildren(element, "");
-    }
-	
-    std::cout<<generator.GenerateXml(test2);
+    std::cout<<"\n------------\n";
+    std::cout<<"-- XML 1: --\n";
+    std::cout<<"------------\n";
+    std::cout<<xml_generator.GenerateXml(test);
+    std::cout<<"\n------------\n";
+    std::cout<<"-- XML 2: --\n";
+    std::cout<<"------------\n";
+    std::cout<<xml_generator.GenerateXml(test2);
+
+    std::cout<<"\n-------------\n";
+    std::cout<<"-- YAML 1: --\n";
+    std::cout<<"-------------\n";
+    std::cout<< yaml_generator.GenerateYaml(test);
+    std::cout<<"\n-------------\n";
+    std::cout<<"-- YAML 2: --\n";
+    std::cout<<"-------------\n";
+    std::cout<< yaml_generator.GenerateYaml(test2);
+
     return 0;
 }
