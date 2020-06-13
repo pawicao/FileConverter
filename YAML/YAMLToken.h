@@ -14,6 +14,8 @@ namespace YAML {
         MAPPER_TOKEN,
         QUOTED_SCALAR_TOKEN,
         PLAIN_SCALAR_TOKEN,
+        LITERAL_BLOCK_TOKEN,
+        FOLDED_BLOCK_TOKEN,
         HYPHEN_TOKEN,
         INDENT_TOKEN,
         TRUE_TOKEN,

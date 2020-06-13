@@ -33,6 +33,7 @@ const std::string &Element::getValue() const {
 }
 
 void Element::setValue(const std::string &value) {
+    Element::setHasValue(true);
     Element::value = value;
 }
 

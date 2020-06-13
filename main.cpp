@@ -6,27 +6,29 @@
 #include "YAML/YAMLLexer.h"
 #include "YAML/YAMLParser.h"
 
-int main() {
-    std::shared_ptr<XML::XMLLexer> lexer(new XML::XMLLexer("test.xml"));
-    XML::XMLParser parser(lexer);
+void printMeAndChildren(Element element, std::string preset) {
+    preset += "  ";
+    std::cout<<preset<<element.getName()<<": "<<element.getValue()<<std::endl;
+    for(const std::shared_ptr<Element>& child : element.getChildren()) {
+        printMeAndChildren(*child, preset);
+    }
+}
 
-    Document test = parser.parse();
-    for(auto & element : test.elements) {
-        std::cout<<element.getName()<<": "<<element.getValue()<<std::endl;
-        for(auto & child : element.getChildren()) {
-            std::cout<<" "<<child->getName()<<": "<<child->getValue()<<std::endl;
-        }
+int main() {
+    std::shared_ptr<XML::XMLLexer> lexerX(new XML::XMLLexer("test.xml"));
+    XML::XMLParser parserX(lexerX);
+
+    Document test = parserX.parse();
+    for(auto & element : test.getElements()) {
+        printMeAndChildren(element, "");
     }
 
     std::shared_ptr<YAML::YAMLLexer> lexerY(new YAML::YAMLLexer("test.yml"));
     YAML::YAMLParser parserY(lexerY);
 
     Document test2 = parserY.parse();
-    for(auto & element : test2.elements) {
-        std::cout<<element.getName()<<": "<<element.getValue()<<std::endl;
-        for(auto & child : element.getChildren()) {
-            std::cout<<" "<<child->getName()<<": "<<child->getValue()<<std::endl;
-        }
+    for(auto & element : test2.getElements()) {
+        printMeAndChildren(element, "");
     }
 
     return 0;

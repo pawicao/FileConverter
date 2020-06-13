@@ -1,16 +1,62 @@
-- martin:
-     name: Martin D'vloper #Komentarz
-     job:
-     skills:
-       - python
-       - perl
-       - pascal
-- tabitha:
-     name: Tabitha Bitumen
-     job: Developer
-     jobicon: "Dwuliniowy
-     tekst"
-     skills:
-       - lisp
-       - fortran
-       - erlang
+Czlowiek:
+  Imie: Krzysztof
+  Nazwisko: Krawczyk
+  Profesja: piosenkarz
+  Piosenka:
+    Nazwa: Parostatek
+    Premiera: 1976
+    Kompozytorzy:
+      - Krzysztof Krawczyk
+      - Jerzy Milian
+    Tekst:
+      Autor: Tadeusz Drozda
+      Tresc: |-
+        W starym albumie u mego dziadka
+        Jest takie zdjecie, istny cud
+        Plynacy w falach, wsrod mewek stadka
+        Statek na pare sprzed lat stu
+        Tlum marynarzy poklad mu zdobi
+        Slonce na gorze pieknie lsni
+        Dobry fotograf to zdjecie zrobil
+        Wszystko jak zywe, az sie cni
+        Parostatkiem w piekny rejs, statkiem na pare w piekny rejs
+        Przy wtorze klatw bosmana, glosnych krzykow az od rana
+        Tak spiewnie dusza lka
+        Kapielowy kostium wloz i na pokladzie cialo zloz
+        Bo tutaj szum maszyny, bo tutaj glosem dziewczyny
+        Tak cudnie sruba gra
+        (Marynarze, marynarki prosze bardzo ladies and gentelmen
+        Marynarze prosze nie wychylac sie za burte)
+        Dziadek bosmanem byl na tym statku
+        Wsrod majtkow wzbudzal wiecznie strach
+        Krzyczal, az drzaly na brzegach kwiatki
+        Cala zaloga stala we lzach
+        Lecz kiedy dziadek fajke zapalil
+        Tyton mu zaczal pluca grzac
+        Dziadek cos nucil, tyton sie palil
+        Marzyl, by wieki mogl tam trwac
+        Parostatkiem w piekny rejs, statkiem na pare w piekny rejs
+        Przy wtorze klatw bosmana, glosnych krzykow az od rana
+        Tak spiewnie dusza lka
+        Kapielowy kostium wloz i na pokladzie cialo zloz
+        Bo tutaj szum maszyny, bo tutaj glosem dziewczyny
+        Tak cudnie sruba gra
+    Plyta: Rysunek na szkle
+json:
+  - rigid
+  - interchanging
+yaml:
+  - flexible
+  - configurations
+object:
+  key: value
+  array:
+      - null_value:
+      - boolean: true
+      - integer: 1
+paragraph: >
+  This is a
+  folded block element
+content: |-
+  This is a literal
+  block element

@@ -21,7 +21,47 @@ namespace YAML {
         std::vector<ElementPtr> elements;
         ElementPtr element;
         while (element = parseElement(parent_indentation)) {
-            elements.push_back(element);
+            if(parent_indentation == -1 && last_seq_mode) {
+                ElementPtr el_to_add(new Element("root"));
+                if(element->getChildren().empty()) {
+                    if(element->isHasValue()) {
+                        ElementPtr child(new Element(element->getName(), element->getValue()));
+                        el_to_add->addChild(child);
+                    }
+                    else {
+                        el_to_add->setValue(element->getName());
+                    }
+                }
+                else {
+                    ElementPtr child(new Element(element->getName()));
+                    child->setChildren(element->getChildren());
+                    el_to_add->addChild(child);
+                }
+                elements.push_back(el_to_add);
+            }
+            else if(!element->getChildren().empty() && element->getChildren()[0]->getName().substr(0,3) == "`'`") {
+                for(auto & el : element->getChildren()) {
+                    el->setName(el->getName().substr(3, el->getName().size()));
+                    ElementPtr el_to_add(new Element(element->getName()));
+                    if(el->getChildren().empty()) {
+                        if(el->isHasValue()) {
+                            el_to_add->addChild(el);
+                        }
+                        else {
+                            el_to_add->setValue(el->getName());
+                        }
+                    }
+                    else {
+                        ElementPtr child(new Element(el->getName()));
+                        child->setChildren(el->getChildren());
+                        el_to_add->addChild(child);
+                    }
+                    elements.push_back(el_to_add);
+                }
+            }
+            else {
+                elements.push_back(element);
+            }
         }
         return elements;
     }
@@ -109,7 +149,9 @@ namespace YAML {
                 last_indentation = indentation_level;
                 last_seq_mode = true;
                 last_had_value = true;
-                ElementPtr element(new Element("null"));
+                element_name = "`'`";
+                element_name += "null";
+                ElementPtr element(new Element(element_name));
                 return handleComment(element);
             }
             else {
@@ -126,7 +168,9 @@ namespace YAML {
                     last_indentation = indentation_level;
                     last_seq_mode = true;
                     last_had_value = true;
-                    ElementPtr element(new Element("null"));
+                    element_name = "`'`";
+                    element_name += "null";
+                    ElementPtr element(new Element(element_name));
                     return element;
                 }
                 throw std::runtime_error("Wrong indentation in a sequence.");
@@ -137,7 +181,14 @@ namespace YAML {
             throw std::runtime_error("Extra-characters keys not supported.");
         }
         YAMLToken token2 = readToken();
-        ElementPtr element(new Element(token.value));
+        if(seq_mode) {
+            element_name = "`'`";
+            element_name += token.value;
+        }
+        else {
+            element_name = token.value;
+        }
+        ElementPtr element(new Element(element_name));
         while(token2.token == INDENT_TOKEN) {
             token2 = readToken();
         }
@@ -180,7 +231,83 @@ namespace YAML {
                 element->setHasValue(false);
                 element->setChildren(children);
             }
-        } else if (token.token == YNULL_TOKEN || token.token == TRUE_TOKEN || token.token == FALSE_TOKEN ||
+        }
+        else if (token.token == FOLDED_BLOCK_TOKEN || token.token == LITERAL_BLOCK_TOKEN){
+            bool endline_present = true;
+            element_value = "";
+            bool folded = token.token == FOLDED_BLOCK_TOKEN;
+            unsigned int indentCount;
+            token = readToken();
+            if(token.token == HYPHEN_TOKEN) {
+                endline_present = false;
+                token = readToken();
+            }
+            while(token.token == INDENT_TOKEN) {
+                token = readToken();
+            }
+            if(token.token != EOL_TOKEN) {
+                throw std::runtime_error("There must be a newline after the start of a block scalar.");
+            }
+            while(true) {
+                indentCount = 0;
+                while(true) {
+                    token = readToken();
+                    if(token.token == INDENT_TOKEN) {
+                        ++indentCount;
+                    }
+                    else {
+                        break;
+                    }
+                }
+                if(indentCount <= indentation_level) {
+                    for(int i = 0; i < indentCount; ++i) {
+                        lookahead.emplace_back(INDENT_TOKEN, "");
+                    }
+                    lookahead.push_back(token);
+                    if(!endline_present && !element_value.empty() && element_value.back() == '\n') {
+                        element_value = element_value.substr(0, element_value.size()-1);
+                    }
+                    break;
+                }
+                else {
+                    if(token.token == QUOTED_SCALAR_TOKEN) {
+                        element_value+= '"';
+                        element_value+= token.value;
+                        element_value+= '"';
+                        if(folded)
+                            element_value+= ' ';
+                        else
+                            element_value+= '\n';
+                    }
+                    else if(token.token == YNULL_TOKEN || token.token == TRUE_TOKEN || token.token == FALSE_TOKEN ||
+                            token.token == PLAIN_SCALAR_TOKEN) {
+                        element_value += token.value;
+                        if(folded)
+                            element_value+= ' ';
+                        else
+                            element_value+= '\n';
+                    }
+                    else if(token.token == INVALID_TYPE_TOKEN || token.token == EOL_TOKEN) {
+                        if(folded)
+                            element_value+= ' ';
+                        else
+                            element_value+= '\n';
+                        break;
+                    }
+                    else {
+                        throw std::runtime_error("Extra-characters in block scalars not supported.");
+                    }
+                    token = readToken();
+                    if(token.token != EOL_TOKEN && token.token != INVALID_TYPE_TOKEN) {
+                        lookahead.push_back(token);
+                    }
+                }
+            }
+            element->setHasValue(true);
+            element->setValue(element_value);
+            last_had_value = true;
+        }
+        else if (token.token == YNULL_TOKEN || token.token == TRUE_TOKEN || token.token == FALSE_TOKEN ||
                    token.token == PLAIN_SCALAR_TOKEN || token.token == QUOTED_SCALAR_TOKEN) {
             element_value = token.value;
             if(token.token != QUOTED_SCALAR_TOKEN) {

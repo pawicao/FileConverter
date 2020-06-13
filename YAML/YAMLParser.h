@@ -8,7 +8,7 @@
 #include "YAMLLexer.h"
 #include "../document/Element.h"
 #include "../document/Document.h"
-// TODO: Proper arraying, folded and literal
+
 namespace YAML {
     class YAMLParser {
     public:

@@ -50,7 +50,7 @@ private:
     std::string name;
     std::string value;
     Children children;
-    bool hasValue; //if field has a value it cannot have children
+    bool hasValue = false; //if field has a value it cannot have children
     Attributes attributes; // <title lang="en"> - lang is attribute - must be handled different than normal field
 
     inline void resetChildren()
