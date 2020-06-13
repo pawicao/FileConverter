@@ -5,6 +5,7 @@
 #include "XML/XMLParser.h"
 #include "YAML/YAMLLexer.h"
 #include "YAML/YAMLParser.h"
+#include "XML/XMLGenerator.h"
 
 void printMeAndChildren(Element element, std::string preset) {
     preset += "  ";
@@ -15,21 +16,22 @@ void printMeAndChildren(Element element, std::string preset) {
 }
 
 int main() {
-    std::shared_ptr<XML::XMLLexer> lexerX(new XML::XMLLexer("test.xml"));
-    XML::XMLParser parserX(lexerX);
+    std::shared_ptr<XML::XMLLexer> lexer(new XML::XMLLexer(XML::ROOT+"test.xml"));
+    XML::XMLParser parser(lexer);
 
-    Document test = parserX.parse();
-    for(auto & element : test.getElements()) {
-        printMeAndChildren(element, "");
-    }
+    Document test = parser.parse();
 
-    std::shared_ptr<YAML::YAMLLexer> lexerY(new YAML::YAMLLexer("test.yml"));
+    XML::XMLGenerator generator{};
+    std::cout<<generator.GenerateXml(test);
+
+    std::shared_ptr<YAML::YAMLLexer> lexerY(new YAML::YAMLLexer(XML::ROOT+"test.yml"));
     YAML::YAMLParser parserY(lexerY);
 
     Document test2 = parserY.parse();
     for(auto & element : test2.getElements()) {
         printMeAndChildren(element, "");
     }
-
+	
+    std::cout<<generator.GenerateXml(test2);
     return 0;
 }

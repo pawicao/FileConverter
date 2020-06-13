@@ -16,7 +16,7 @@ void Element::addChild(std::shared_ptr<Element> child) {
 }
 
 Element::Element(const std::string &name, const std::string &value) :
-name(name), value(value), hasValue(true) {}
+        name(name), value(value), hasValue(true) {}
 
 Element::Element(const std::string &name) : name(name) {}
 
@@ -45,7 +45,7 @@ void Element::setChildren(Children children) {
     Element::children = std::move(children);
 }
 
-bool Element::isHasValue() const {
+bool Element::hasValueFun() const {
     return hasValue;
 }
 
