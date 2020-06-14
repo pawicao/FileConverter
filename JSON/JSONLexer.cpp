@@ -93,6 +93,7 @@ namespace JSON
                     }else if (isdigit(next) || next == '.'){
                         value += next;
                     }else if(next == ',' || next == '}' || next == ']'){
+                        rest.push_back(next);
                         jsonState = NUMBER_STATE;
                     }
                     break;
@@ -106,6 +107,7 @@ namespace JSON
                     }else if (isalpha(next)){
                         value += next;
                     }else if(next == ',' || next == '}' || next == ']'){
+                        rest.push_back(next);
                         if(value == "true"){
                             jsonState = TRUE_STATE;
                         }else if(value == "false"){
