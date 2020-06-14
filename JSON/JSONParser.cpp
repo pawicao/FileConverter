@@ -53,9 +53,6 @@ namespace JSON
                     m_lookahead.push_back(token);
                     return element;
                 }
-                if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET){
-                    throw std::runtime_error("Unexpected token type after value in arr");
-                }
             }else if(token.token == LEFT_BRACE) {
                 std::vector<ElementPtr> children = parseElements(false);
                 element->setChildren(children);
@@ -68,7 +65,7 @@ namespace JSON
                     m_lookahead.push_back(token);
                     return element;
                 }
-                if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
+                if(token.token != INVALID_TYPE){
                     throw std::runtime_error("Unexpected token type after object in arr");
                 }
             }else if(token.token == LEFT_BRACKET) {
@@ -83,7 +80,7 @@ namespace JSON
                     m_lookahead.push_back(token);
                     return element;
                 }
-                if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
+                if(token.token != INVALID_TYPE){
                     throw std::runtime_error("Unexpected token type after array in arr");
                 }
             }else if(token.token == INVALID_TYPE || token.token == RIGHT_BRACKET) {
@@ -116,10 +113,6 @@ namespace JSON
                     if(token.token == COMMA || token.token == RIGHT_BRACE || token.token == RIGHT_BRACKET){
                         return element;
                     }
-                    if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET){
-                        throw std::runtime_error("Unexpected token type after value");
-                    }
-
                 }else if(token.token == LEFT_BRACE) {
                     std::vector<ElementPtr> children = parseElements(false);
                     element->setChildren(children);
@@ -127,8 +120,7 @@ namespace JSON
                     if(token.token == COMMA || token.token == RIGHT_BRACKET || token.token==RIGHT_BRACE){
                         return element;
                     }
-//                    std::cout<<(token.token==INVALID_TYPE ? "invalid type" : "other")<<std::endl;
-                    if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
+                    if(token.token != INVALID_TYPE){
                         throw std::runtime_error("Unexpected token type after object");
                     }
 
@@ -139,7 +131,7 @@ namespace JSON
                     if(token.token == COMMA || token.token == RIGHT_BRACKET || token.token==RIGHT_BRACE){
                         return element;
                     }
-                    if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
+                    if(token.token != INVALID_TYPE){
                         throw std::runtime_error("Unexpected token type after array");
                     }
                 }else {
@@ -175,8 +167,4 @@ namespace JSON
             return token;
         }
     }
-
-
-
-
 }
