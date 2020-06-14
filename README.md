@@ -77,4 +77,16 @@ Converting AST into YAML document is pretty straightforward. Starting from the r
 
 ## Usage
 
-...
+After compilation of the project, one must specify the input file (XML, YAML or JSON) using **-i \<PATH>** option.
+
+Other option that has to be specified must be the result language of the conversion (XML, YAML or JSON): **-l \<xml/yaml/json>**.
+
+One can specify the output filename using **-o \<PATH>** option. If no output filename specified, the output is printed to **stdout**.
+
+The whole manual is described below:
+```
+Usage: FileConverter [options...]
+ -i <PATH>              Path of the file to be parsed.
+ -o <PATH>              Path of the file to be written to. If not specified, stdout is used.
+ -l <xml/yaml/json>     Result language (can be xml, yaml or json).
+```
