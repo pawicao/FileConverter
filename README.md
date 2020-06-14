@@ -67,10 +67,14 @@ The lexer tokens are defined as follows:
  - EOL_TOKEN,
  - INVALID_TYPE_TOKEN
  
-YAML parser works the same way as described above XML and JSON parsers. Firstly YAMLLexer reads the characters of files and divides them into tokens. Then the tokens are handled by the YAMLParser which - basing on the indentations and the arrangement of different tokens - recursively creates AST elements.
+YAML parser works the same way as described above XML and JSON parsers. Firstly, YAMLLexer reads the characters of files and divides them into tokens. Then the tokens are handled by the YAMLParser which - basing on the indentations and the arrangement of different tokens - recursively creates AST elements.
 
 _Warning: YAML forbid tabs as the method of indentation, therefore only space indents are allowed._
 
 #### Abstract Syntax Tree -> YAML
+
+Converting AST into YAML document is pretty straightforward. Starting from the root for each AST element the algorithm seeks any children which have the same name. If such are found, they are grouped into arrays using boolean flags. Afterwards the elements are written into the YAML file - with proper indentation for all children, arrays and block scalars.
+
+## Usage
 
 ...
