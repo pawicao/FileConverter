@@ -29,8 +29,8 @@ namespace YAML {
     private:
         std::shared_ptr<YAMLLexer> lexer;
         std::list<YAMLToken> lookahead;
-        bool last_seq_mode = NULL;
-        int last_indentation = NULL;
+        bool last_seq_mode = false;
+        int last_indentation = 0;
         bool last_had_value = false;
     };
 }

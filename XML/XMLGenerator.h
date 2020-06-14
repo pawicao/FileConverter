@@ -38,7 +38,7 @@ namespace XML
 
         int tabCount = 0;
 
-        const std::string &printName(const Element &element) const;
+        std::string printName(const Element &element) const;
     };
 }
 

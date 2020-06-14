@@ -20,8 +20,8 @@ namespace XML
         + printValue(element) + printChildren(element) + printEndingTag(element);
     }
 
-    const std::string &XMLGenerator::printName(const Element &element) const
-    { return element.getName(); }
+    std::string XMLGenerator::printName(const Element &element) const
+    { return element.getName() == ""? "root": element.getName(); }
 
     std::string XMLGenerator::printEndingTag(const Element &element)
     {
@@ -31,9 +31,9 @@ namespace XML
         }
         if(element.hasValueFun())
         {
-            return "</" + element.getName() + ">\n";
+            return "</" + printName(element) + ">\n";
         }
-        return printWithProperTabulation("</" + element.getName() + ">\n");
+        return printWithProperTabulation("</" + printName(element) + ">\n");
     }
 
     std::string XMLGenerator::printChildren(const Element &element)

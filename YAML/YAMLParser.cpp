@@ -124,7 +124,7 @@ namespace YAML {
             if(token.token != INDENT_TOKEN && token.token != EOL_TOKEN)
                 throw std::runtime_error("Space needed between hyphen and key in sequences.");
         }
-        if(last_seq_mode != NULL) {
+        if(last_seq_mode) {
             if(last_seq_mode != seq_mode && last_indentation == indentation_level) {
                 if(seq_mode)
                     throw std::runtime_error("You cannot define a sequence item when in a mapping.");
