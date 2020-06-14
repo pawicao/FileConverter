@@ -42,21 +42,3 @@ Czlowiek:
         Bo tutaj szum maszyny, bo tutaj glosem dziewczyny
         Tak cudnie sruba gra
     Plyta: Rysunek na szkle
-json:
-  - rigid
-  - interchanging
-yaml:
-  - flexible
-  - configurations
-object:
-  key: value
-  array:
-      - null_value:
-      - boolean: true
-      - integer: 1
-paragraph: >
-  This is a
-  folded block element
-content: |-
-  This is a literal
-  block element
