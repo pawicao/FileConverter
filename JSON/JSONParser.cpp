@@ -83,6 +83,7 @@ namespace JSON
         if(token.token == LEFT_BRACE) {
             std::vector<ElementPtr> children = parseElements(false);
             element->setChildren(children);
+            return element;
         }
 
         if(token.token == STRING) {
@@ -95,7 +96,7 @@ namespace JSON
                     element->setHasValue(true);
                     element->setValue(token.value);
                     token = readToken();
-                    if(token.token == COMMA){
+                    if(token.token == COMMA || token.token == RIGHT_BRACE || token.token == RIGHT_BRACKET){
                         return element;
                     }
                     if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET){
@@ -118,7 +119,7 @@ namespace JSON
                     std::vector<ElementPtr> children = parseElements(true);
                     element->setChildren(children);
                     token = readToken();
-                    if(token.token == COMMA){
+                    if(token.token == COMMA || token.token == RIGHT_BRACKET || token.token==RIGHT_BRACE){
                         return element;
                     }
                     if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
@@ -131,7 +132,8 @@ namespace JSON
                 throw std::runtime_error("Unexpected token type");
             }
         }
-        return element;
+        m_lookahead.push_back(token);
+        return std::shared_ptr<Element>();
     }
 
     void JSONParser::checkToken(const JSONToken &token, JSONTokenType expectedType) {
