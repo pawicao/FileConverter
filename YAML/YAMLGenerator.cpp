@@ -114,7 +114,7 @@ namespace YAML {
                 for(int i = 0; i < depth_level +extra_indent; ++i) {
                     result += ' ';
                 }
-                result += "__text: " + printValue(element, depth_level + extra_indent_block) + '\n';
+                result += "__text: " + printValue(element, depth_level + extra_indent_block);
             }
         }
         else if(element.hasValueFun()) {
