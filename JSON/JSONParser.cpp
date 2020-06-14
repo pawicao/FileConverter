@@ -45,21 +45,30 @@ namespace JSON
                 element->setHasValue(true);
                 element->setValue(token.value);
                 token = readToken();
-                if(token.token != COMMA && token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET){
+                if(token.token == COMMA){
+                    return element;
+                }
+                if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET){
                     throw std::runtime_error("Unexpected token type after value in arr");
                 }
             }else if(token.token == LEFT_BRACE) {
                 std::vector<ElementPtr> children = parseElements(false);
                 element->setChildren(children);
                 token = readToken();
-                if(token.token != COMMA && token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
+                if(token.token == COMMA){
+                    return element;
+                }
+                if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
                     throw std::runtime_error("Unexpected token type after object in arr");
                 }
             }else if(token.token == LEFT_BRACKET) {
                 std::vector<ElementPtr> children = parseElements(true);
                 element->setChildren(children);
                 token = readToken();
-                if(token.token != COMMA && token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
+                if(token.token == COMMA){
+                    return element;
+                }
+                if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
                     throw std::runtime_error("Unexpected token type after array in arr");
                 }
             }else {
@@ -86,7 +95,10 @@ namespace JSON
                     element->setHasValue(true);
                     element->setValue(token.value);
                     token = readToken();
-                    if(token.token != COMMA && token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET){
+                    if(token.token == COMMA){
+                        return element;
+                    }
+                    if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET){
                         throw std::runtime_error("Unexpected token type after value");
                     }
 
@@ -94,8 +106,11 @@ namespace JSON
                     std::vector<ElementPtr> children = parseElements(false);
                     element->setChildren(children);
                     token = readToken();
+                    if(token.token == COMMA){
+                        return element;
+                    }
 //                    std::cout<<(token.token==INVALID_TYPE ? "invalid type" : "other")<<std::endl;
-                    if(token.token != COMMA && token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
+                    if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
                         throw std::runtime_error("Unexpected token type after object");
                     }
 
@@ -103,7 +118,10 @@ namespace JSON
                     std::vector<ElementPtr> children = parseElements(true);
                     element->setChildren(children);
                     token = readToken();
-                    if(token.token != COMMA && token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
+                    if(token.token == COMMA){
+                        return element;
+                    }
+                    if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
                         throw std::runtime_error("Unexpected token type after array");
                     }
                 }else {
