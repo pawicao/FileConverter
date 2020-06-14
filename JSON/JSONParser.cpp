@@ -60,10 +60,6 @@ namespace JSON
                 }
                 if(token.token==RIGHT_BRACKET || token.token == RIGHT_BRACE)
                 {
-//                    while (token.token == RIGHT_BRACKET || token.token == RIGHT_BRACE)
-//                    {
-//                        token = readToken();
-//                    }
                     m_lookahead.push_back(token);
                     return element;
                 }
@@ -75,6 +71,11 @@ namespace JSON
                 element->setChildren(children);
                 token = readToken();
                 if(token.token == COMMA){
+                    return element;
+                }
+                if(token.token==RIGHT_BRACKET || token.token == RIGHT_BRACE)
+                {
+                    m_lookahead.push_back(token);
                     return element;
                 }
                 if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
@@ -118,7 +119,7 @@ namespace JSON
                     std::vector<ElementPtr> children = parseElements(false);
                     element->setChildren(children);
                     token = readToken();
-                    if(token.token == COMMA){
+                    if(token.token == COMMA || token.token == RIGHT_BRACKET || token.token==RIGHT_BRACE){
                         return element;
                     }
 //                    std::cout<<(token.token==INVALID_TYPE ? "invalid type" : "other")<<std::endl;
