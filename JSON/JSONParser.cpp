@@ -48,6 +48,11 @@ namespace JSON
                 if(token.token == COMMA){
                     return element;
                 }
+                if(token.token==RIGHT_BRACKET || token.token == RIGHT_BRACE)
+                {
+                    m_lookahead.push_back(token);
+                    return element;
+                }
                 if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET){
                     throw std::runtime_error("Unexpected token type after value in arr");
                 }
