@@ -119,11 +119,11 @@ namespace JSON
                     break;
                 }
                 case NULL_STATE:
-                    return JSONToken(JNULL, "");
+                    return JSONToken(JNULL, "null");
                 case TRUE_STATE:
-                    return JSONToken(TRUE,"");
+                    return JSONToken(TRUE,"true");
                 case FALSE_STATE:
-                    return JSONToken(FALSE, "");
+                    return JSONToken(FALSE, "false");
                 case LBRACE:
                     return JSONToken(LEFT_BRACE, "");
                 case RBRACE:
