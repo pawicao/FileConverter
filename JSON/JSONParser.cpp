@@ -7,7 +7,7 @@
 namespace JSON
 {
     JSONParser::JSONParser(const std::shared_ptr<JSONLexer> &mLexer) {
-        this->m_lexer = mLexer
+        this->m_lexer = mLexer;
     }
 
     Document JSONParser::parse() {
@@ -102,13 +102,13 @@ namespace JSON
 
     JSONToken JSONParser::readCheckedToken(JSONTokenType expectedType) {
         JSONToken token = readToken();
-        checkTokenType(token, expectedType);
+        checkToken(token, expectedType);
         return token;
     }
 
     JSONToken JSONParser::readToken() {
         if(m_lookahead.empty()){
-            return m_lexer->nextToken();
+            return m_lexer->readToken();
         }
         else{
             JSONToken token = m_lookahead.front();
@@ -120,5 +120,4 @@ namespace JSON
 
 
 
-}
 }

@@ -5,9 +5,11 @@
 #ifndef FILECONVERTER_JSONPARSER_H
 #define FILECONVERTER_JSONPARSER_H
 
-#include <bits/shared_ptr.h>
+#include "../document/Document.h"
 #include "../document/Element.h"
 #include "JSONToken.h"
+#include "JSONLexer.h"
+
 
 namespace JSON {
     class JSONParser {
@@ -16,8 +18,9 @@ namespace JSON {
         std::list<JSONToken> m_lookahead;
 
     public:
-        std::vector<ElementPtr> parseElements();
-        ElementPtr  parseElement();
+        Document parse();
+        std::vector<ElementPtr> parseElements(bool isArray);
+        ElementPtr  parseElement(bool isArray);
         JSONParser(const std::shared_ptr<JSONLexer> &mLexer);
         static void checkToken(const JSONToken& token, JSONTokenType expectedType);
         JSONToken readCheckedToken(JSONTokenType expectedType);
