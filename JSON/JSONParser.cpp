@@ -58,6 +58,15 @@ namespace JSON
                 if(token.token == COMMA){
                     return element;
                 }
+                if(token.token==RIGHT_BRACKET || token.token == RIGHT_BRACE)
+                {
+//                    while (token.token == RIGHT_BRACKET || token.token == RIGHT_BRACE)
+//                    {
+//                        token = readToken();
+//                    }
+                    m_lookahead.push_back(token);
+                    return element;
+                }
                 if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
                     throw std::runtime_error("Unexpected token type after object in arr");
                 }
@@ -71,6 +80,8 @@ namespace JSON
                 if(token.token != RIGHT_BRACE && token.token != RIGHT_BRACKET && token.token != INVALID_TYPE){
                     throw std::runtime_error("Unexpected token type after array in arr");
                 }
+            }else if(token.token == INVALID_TYPE || token.token == RIGHT_BRACKET) {
+                return std::shared_ptr<Element>();
             }else {
                 throw std::runtime_error("Unexpected token type");
             }

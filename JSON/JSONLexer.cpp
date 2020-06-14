@@ -61,6 +61,7 @@ namespace JSON
                         value+=next;
                     }else if(isdigit(next) || next == '.') {
                         jsonState = START_NUMBER;
+                        value+=next;
                     };
                     break;
                 }
