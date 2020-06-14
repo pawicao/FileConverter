@@ -5,7 +5,7 @@
 #include "document/Document.h"
 #include "XML/XMLLexer.h"
 #include "JSON/JSONLexer.h"
-//#include "JSON/JSONParser.h"
+#include "JSON/JSONParser.h"
 //#include "JSON/JSONGenerator.h"
 #include "XML/XMLParser.h"
 #include "YAML/YAMLLexer.h"
@@ -69,9 +69,9 @@ int main(int argc, char * argv[]) {
         document = xml_parser.parse();
     }
     else if (file.length() > 4 && file.substr(file.length() - 5) == ".json"){
-        //std::shared_ptr<JSON::JSONLexer> json_lexer(new JSON::JSONLexer(file));
-        //JSON::JSONParser json_parser(json_lexer);
-        //document = json_parser.parse();
+        std::shared_ptr<JSON::JSONLexer> json_lexer(new JSON::JSONLexer(file));
+        JSON::JSONParser json_parser(json_lexer);
+        document = json_parser.parse();
     }
     else if( (file.length() > 4 && file.substr(file.length() - 5) == ".yaml") ||
             (file.length() > 3 && file.substr(file.length() - 4) == ".yml") ) {

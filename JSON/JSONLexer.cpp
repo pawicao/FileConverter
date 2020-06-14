@@ -36,8 +36,8 @@ namespace JSON
         }
         jsonState = START;
         for (;;){
-            switch (jsonState){
-                case START:
+            switch (jsonState)
+                case START:{
                 {
                     unsigned char next = readChar();
                     if(end){
@@ -47,9 +47,9 @@ namespace JSON
                     }else if(next == '}') {
                         jsonState = RBRACE;
                     }else if(next == '[') {
-                        jsonState  = RBRACKET;
-                    }else if(next == ']') {
                         jsonState  = LBRACKET;
+                    }else if(next == ']') {
+                        jsonState  = RBRACKET;
                     }else if(next == ':') {
                         jsonState  = KEY_VALUE;
                     }else if(next == ',') {
@@ -58,6 +58,7 @@ namespace JSON
                         jsonState = START_STRING;
                     }else if(isalpha(next)) {
                         jsonState = START_SPECIAL;
+                        value+=next;
                     }else if(isdigit(next) || next == '.') {
                         jsonState = START_NUMBER;
                     };
