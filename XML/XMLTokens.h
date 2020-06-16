@@ -1,8 +1,8 @@
 //
 // Created by filja on 21.05.2020.
 //
-#ifndef FILECONVERTER_XML_TOKENS_H
-#define FILECONVERTER_XML_TOKENS_H
+#ifndef FILECONVERTER_XMLTOKENS_H
+#define FILECONVERTER_XMLTOKENS_H
 #include <string>
 #include <memory>
 namespace XML
@@ -49,4 +49,4 @@ namespace XML
 }
 
 
-#endif //FILECONVERTER_XML_TOKENS_H
+#endif //FILECONVERTER_XMLTOKENS_H
