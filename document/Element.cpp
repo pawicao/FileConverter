@@ -61,4 +61,12 @@ const Attributes &Element::getAttributes() const {
     return attributes;
 }
 
+int Element::getType() const {
+    return type;
+}
+
+void Element::setType(int type) {
+    Element::type = type;
+}
+
 

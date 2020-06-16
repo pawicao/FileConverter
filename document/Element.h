@@ -46,12 +46,17 @@ public:
 
     const Attributes &getAttributes() const;
 
+    int getType() const;
+
+    void setType(int type);
+
 private:
     std::string name;
     std::string value;
     Children children;
     bool hasValue = false; //if field has a value it cannot have children
     Attributes attributes; // <title lang="en"> - lang is attribute - must be handled different than normal field
+    int type = 0; // 0-default ,1-array, 2-object
 
     inline void resetChildren()
     {

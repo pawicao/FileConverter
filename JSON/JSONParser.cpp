@@ -57,6 +57,7 @@ namespace JSON
                     throw std::runtime_error("Unexpected token type after value in arr");
                 }
             }else if(token.token == LEFT_BRACE) {
+                element->setType(2);
                 std::vector<ElementPtr> children = parseElements(false);
                 element->setChildren(children);
                 token = readToken();
@@ -72,6 +73,7 @@ namespace JSON
                     throw std::runtime_error("Unexpected token type after object in arr");
                 }
             }else if(token.token == LEFT_BRACKET) {
+                element->setType(1);
                 std::vector<ElementPtr> children = parseElements(true);
                 element->setChildren(children);
                 token = readToken();
@@ -98,6 +100,7 @@ namespace JSON
         }
 
         if(token.token == LEFT_BRACE) {
+            element->setType(2);
             std::vector<ElementPtr> children = parseElements(false);
             element->setChildren(children);
             return element;
@@ -121,6 +124,7 @@ namespace JSON
                     }
 
                 }else if(token.token == LEFT_BRACE) {
+                    element->setType(2);
                     std::vector<ElementPtr> children = parseElements(false);
                     element->setChildren(children);
                     token = readToken();
@@ -133,6 +137,7 @@ namespace JSON
                     }
 
                 }else if(token.token == LEFT_BRACKET) {
+                    element->setType(1);
                     std::vector<ElementPtr> children = parseElements(true);
                     element->setChildren(children);
                     token = readToken();
