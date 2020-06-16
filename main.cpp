@@ -12,6 +12,7 @@
 #include "YAML/YAMLParser.h"
 #include "XML/XMLGenerator.h"
 #include "YAML/YAMLGenerator.h"
+#include "JSON/JSONGenerator.h"
 
 char* getCmdOption(char ** begin, char ** end, const std::string & option)
 {
@@ -100,8 +101,8 @@ int main(int argc, char * argv[]) {
         result_string = xml_generator.GenerateXml(document);
     }
     else if(strcmp(result_language, "json") == 0) {
-        //JSON::JSONGenerator json_generator{};
-        //result_string = json_generator.GenerateJson(document);
+        JSON::JSONGenerator json_generator{};
+        result_string = json_generator.GenerateJSON(document);
     }
     else if(strcmp(result_language, "yml") == 0 || strcmp(result_language, "yaml") == 0) {
         YAML::YAMLGenerator yaml_generator{};

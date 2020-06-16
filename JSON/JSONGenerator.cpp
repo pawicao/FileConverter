@@ -11,13 +11,15 @@ namespace JSON{
         std::string json;
         std::for_each(document.getElements().begin(), document.getElements().end(),
                       [&](const Element& e) {json += Generate(e);});
+        json.pop_back();
+        json.pop_back();
         return json;
     }
 
     std::string JSONGenerator::Generate(const Element &element){
         return printOpeningTag(element.getType()) + printAttributes(element)
-        + printKey(element) + printValue(element) + printChildren(element)
-        + printClosingTag(element.getType()) + ", ";
+        + printKey(element) + printValue(element)  + printChildren(element)
+        + "\n" + printClosingTag(element.getType());
     }
 
     std::string JSONGenerator::printChildren(const Element &element){
@@ -27,8 +29,13 @@ namespace JSON{
         tabCount++;
         std::string tmp;
         std::for_each(element.getChildren().begin(), element.getChildren().end(),
-                      [&](const std::shared_ptr<Element> &child)
-                      { tmp += Generate(*child); });
+                      [&](const std::shared_ptr<Element> &child){
+                        tmp += printWithProperTabulation("");
+                        tmp += Generate(*child);
+                        tmp += "\n";
+                      });
+        tmp.pop_back();
+        tmp.pop_back();
         tmp.pop_back();
         tabCount--;
         return tmp;
@@ -39,9 +46,9 @@ namespace JSON{
             case 0:
                 return "";
             case 1:
-                return printWithProperTabulation("[");
+                return "[\n" + printWithProperTabulation("");
             case 2:
-                return printWithProperTabulation("{");
+                return "{\n" + printWithProperTabulation("");
         }
         return "";
     }
@@ -49,11 +56,11 @@ namespace JSON{
     std::string JSONGenerator::printClosingTag(int type){
         switch (type) {
             case 0:
-                return "";
+                return ", ";
             case 1:
-                return printWithProperTabulation("]");
+                return "], ";
             case 2:
-                return printWithProperTabulation("}");
+                return printWithProperTabulation("") + "}, ";
         }
         return "";
     }
@@ -67,7 +74,7 @@ namespace JSON{
     }
 
     std::string JSONGenerator::printValue(const Element &element){
-        return element.hasValueFun() ? element.getValue() + ", " : "";
+        return element.hasValueFun() ? element.getValue() : "";
     }
 
     std::string JSONGenerator::printAttributes(const Element &element){
@@ -75,12 +82,12 @@ namespace JSON{
             return "";
         }
         std::string s;
-        s += printOpeningTag(1);
+        s += "\"attributes\" : {";
         std::for_each(element.getAttributes().begin(), element.getAttributes().end(),
                       [&](const std::pair<std::string, std::string> &attribute)
-                      { s += " " +attribute.first + " : " + attribute.second + ","; });
+                      { s += " \"" +attribute.first + "\" : " + attribute.second + ","; });
         s.pop_back();
-        s += printClosingTag(1);
+        s += " }, ";
         return s;
     }
 
