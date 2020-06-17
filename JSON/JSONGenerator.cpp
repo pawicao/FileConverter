@@ -2,6 +2,7 @@
 // Created by joanna on 14.06.2020.
 //
 #include <algorithm>
+#include <regex>
 #include "JSONGenerator.h"
 
 namespace JSON{
@@ -17,9 +18,20 @@ namespace JSON{
     }
 
     std::string JSONGenerator::Generate(const Element &element){
+        std::regex number("((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?");
+        if(element.hasValueFun() && (std::regex_match(element.getValue(),number) || element.getValue()=="null" || element.getValue()=="true" || element.getValue()=="false")){
+            return printOpeningTag(element.getType()) + printAttributes(element)
+                   + printKey(element) + printValue(element)  + printChildren(element)
+                   + "\n" + printClosingTag(element.getType());
+        }else if(element.hasValueFun()){
+            return printOpeningTag(element.getType()) + printAttributes(element)
+            + printKey(element) + "\"" + printValue(element) + "\"" + printChildren(element)
+            + "\n" + printClosingTag(element.getType());
+        }
+
         return printOpeningTag(element.getType()) + printAttributes(element)
-        + printKey(element) + printValue(element)  + printChildren(element)
-        + "\n" + printClosingTag(element.getType());
+               + printKey(element)  + printValue(element) + printChildren(element)
+               + "\n" + printClosingTag(element.getType());
     }
 
     std::string JSONGenerator::printChildren(const Element &element){
@@ -27,6 +39,7 @@ namespace JSON{
             return "";
         }
         tabCount++;
+
         std::string tmp;
         std::for_each(element.getChildren().begin(), element.getChildren().end(),
                       [&](const std::shared_ptr<Element> &child){
