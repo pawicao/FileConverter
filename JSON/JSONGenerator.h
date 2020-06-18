@@ -20,6 +20,9 @@ namespace JSON{
         std::string printWithProperTabulation(const std::string& printable);
         std::string printAttributes(const Element &element);
         std::string printChildren(const Element &element);
+        std::string printWithProperTabulationStart(const std::string &printable);
+        std::string printWithProperTabulationEnd(const std::string &printable);
+
 
         int tabCount;
     public:
@@ -27,6 +30,7 @@ namespace JSON{
 
         std::string GenerateJSON(const Document &document);
         std::string Generate(const Element &Element);
+
     };
 }
 

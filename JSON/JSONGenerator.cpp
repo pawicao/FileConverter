@@ -10,28 +10,30 @@ namespace JSON{
     std::string JSONGenerator::GenerateJSON(const Document &document)
     {
         std::string json;
+        json += "{\n";
         std::for_each(document.getElements().begin(), document.getElements().end(),
                       [&](const Element& e) {json += Generate(e);});
         json.pop_back();
         json.pop_back();
+        json += "\n}";
         return json;
     }
 
     std::string JSONGenerator::Generate(const Element &element){
         std::regex number("((\\+|-)?[[:digit:]]+)(\\.(([[:digit:]]+)?))?");
         if(element.hasValueFun() && (std::regex_match(element.getValue(),number) || element.getValue()=="null" || element.getValue()=="true" || element.getValue()=="false")){
-            return printOpeningTag(element.getType()) + printAttributes(element)
-                   + printKey(element) + printValue(element)  + printChildren(element)
-                   + "\n" + printClosingTag(element.getType());
+            return printAttributes(element) + printKey(element)
+                + printValue(element)  + printChildren(element)
+                + "," ;
         }else if(element.hasValueFun()){
-            return printOpeningTag(element.getType()) + printAttributes(element)
-            + printKey(element) + "\"" + printValue(element) + "\"" + printChildren(element)
-            + "\n" + printClosingTag(element.getType());
+            return printAttributes(element) + printKey(element)
+            + "\"" + printValue(element) + "\""
+            + printChildren(element) + ",";
         }
 
-        return printOpeningTag(element.getType()) + printAttributes(element)
-               + printKey(element)  + printValue(element) + printChildren(element)
-               + "\n" + printClosingTag(element.getType());
+        return printAttributes(element) + printKey(element) + printOpeningTag(element.getType())
+            + printValue(element) + printChildren(element)
+            + "\n" + printClosingTag(element.getType());
     }
 
     std::string JSONGenerator::printChildren(const Element &element){
@@ -49,7 +51,6 @@ namespace JSON{
                       });
         tmp.pop_back();
         tmp.pop_back();
-        tmp.pop_back();
         tabCount--;
         return tmp;
     }
@@ -59,9 +60,9 @@ namespace JSON{
             case 0:
                 return "";
             case 1:
-                return "[\n" + printWithProperTabulation("");
+                return "[\n" + printWithProperTabulationStart("");
             case 2:
-                return "{\n" + printWithProperTabulation("");
+                return "{\n" + printWithProperTabulationStart("");
         }
         return "";
     }
@@ -73,13 +74,21 @@ namespace JSON{
             case 1:
                 return "], ";
             case 2:
-                return printWithProperTabulation("") + "}, ";
+                return printWithProperTabulationEnd("") + "}, ";
         }
         return "";
     }
 
     std::string JSONGenerator::printWithProperTabulation(const std::string &printable){
         return std::string(tabCount, '\t') + printable;
+    }
+
+    std::string JSONGenerator::printWithProperTabulationStart(const std::string &printable){
+        return std::string(tabCount-1 >= 0 ? tabCount-1 : tabCount, '\t') + printable;
+    }
+
+    std::string JSONGenerator::printWithProperTabulationEnd(const std::string &printable){
+        return std::string(tabCount+1 , '\t') + printable;
     }
 
     std::string JSONGenerator::printKey(const Element &element){
@@ -100,7 +109,8 @@ namespace JSON{
                       [&](const std::pair<std::string, std::string> &attribute)
                       { s += " \"" +attribute.first + "\" : " + attribute.second + ","; });
         s.pop_back();
-        s += " }, ";
+        s += " }, \n";
+        s += printWithProperTabulation("");
         return s;
     }
 
