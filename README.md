@@ -23,7 +23,21 @@ For XML the tokens that can be output from lexer are listed below
  -  XML_VALUE,
  
 Lexer is based on a finite state machine - it reads characters from the source until it's sure that it has read a token and passes this token to parser. In some cases certain amount of lookahead is required - for instance if lexer reads '<', it cannot know whether it is XML_LBRACKET or beginning of XML_LSLASH - therefore it must read another characted and decide basing on whether this character equals '/' or not and then if it's not '/' lexer must put it back as it is the beginning of a new token.
-More TBD
+
+When parser requests lexer to provide next token it call ReadToken() method which checks if parser's lookahead is empty - if so it requests lexer to generate next token. 
+
+Parser is trying to parse each element according to the simple XML rules which state that each XML element must start with "<" then have a name, then optionally list of attributes, then it has to have ">" tag, after which comes either the list of children which are parsed recusively, or value and finally closing XML tag which consists of "</" + element's name + ">".
+
+
+#### Abstract Syntax Tree -> XML
+
+XML generation from AST is pretty simple - for each top-level element we generate its XML form in way described below.
+Having an element e with name, list of attributes and value:
+
+<name attribute1="valueN" ... attributeN = "valueN"> value </name>
+
+Instead of value a list of children can be inserted in a recursive way.
+
 
 ### JSON
 _Joanna Kusek_
