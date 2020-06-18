@@ -34,7 +34,7 @@ Parser is trying to parse each element according to the simple XML rules which s
 XML generation from AST is pretty simple - for each top-level element we generate its XML form in way described below.
 Having an element e with name, list of attributes and value:
 
-<name attribute1="valueN" ... attributeN = "valueN"> value </name>
+<name attribute1="valueN" ... attributeN = "valueN"> value \<\/name\>
 
 Instead of value a list of children can be inserted in a recursive way.
 
