@@ -260,7 +260,7 @@ namespace YAML {
                     }
                 }
                 if(indentCount <= indentation_level) {
-                    for(int i = 0; i < indentCount; ++i) {
+                    for(size_t i = 0; i < indentCount; ++i) {
                         lookahead.emplace_back(INDENT_TOKEN, "");
                     }
                     lookahead.push_back(token);

@@ -136,7 +136,9 @@ namespace YAML {
         return result + "_" + attribute.first + ": " + attribute.second + '\n';
     }
 
-    const std::string &YAMLGenerator::printName(const Element &element) const { return element.getName(); }
+    const std::string YAMLGenerator::printName(const Element &element) const {
+        return element.getName().empty() ? "root" : element.getName();
+    }
 
     std::string YAMLGenerator::printValue(const Element &element, const int & depth_level) {
         if(element.getValue().find('\n') == std::string::npos) {

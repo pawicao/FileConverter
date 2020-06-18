@@ -23,7 +23,7 @@ namespace YAML {
 
         std::string printValue(const Element &element, const int &depth_level);
 
-        const std::string &printName(const Element &element) const;
+        const std::string printName(const Element &element) const;
 
         std::string GenerateStructure(const std::vector<std::shared_ptr<Element>> &elements, const int &depth_level);
 
