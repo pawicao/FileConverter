@@ -42,8 +42,20 @@ Instead of value a list of children can be inserted in a recursive way.
 ### JSON
 _Joanna Kusek_
 #### JSON -> Abstract Syntax Tree
+JSON (JavaScript Object Notation) is a lightweight data-interchange format with
+data objects consisting of attribute–value pairs and array data types (or any other serializable value).
+SON's basic data types are:
+ - Number: format makes no distinction between integer and floating-point. JavaScript uses a double-precision floating-point format for all its numeric values.
+ - String: a sequence of zero or more Unicode characters.
+ - Boolean: either of the values true or false
+ - Array: an ordered list of zero or more values, each of which may be of any type. Arrays use square bracket notation with comma-separated elements.
+ - Object: a collection of key–value pairs where the keys are strings. Objects are delimited with curly brackets and use commas to separate each pair, while within each pair the colon ':' character separates the key or name from its value.
+ - null: an empty value, using the word null.
 
-Firstly we have to define tokens for JSON. A token is a structure that describes and categorizes an element from your text input. In case of JSON possible tokens are:
+Lexing is process of tokenising a stream of text, which means chopping that input stream into discrete tokens and identifying the type of each. The output is a new stream, this time of stand-alone tokens.
+
+Based on the above description, we can define tokens for JSON. A token is a structure that describes and categorizes an element from your text input.
+Tokens that can be output from lexer:
 
  - LEFT_BRACE = '{'
  - RIGHT_BRACE = '}'
@@ -51,16 +63,20 @@ Firstly we have to define tokens for JSON. A token is a structure that describes
  - RIGHT_BRACKET = ']'
  - COLON = ':'
  - COMMA = ','
- - KEY (always String)
- - (VALUE)
+ - STRING 
+ - NUMBER
+ - TRUE = true
+ - FALSE = false
+ - JNULL = null
  
-Possible value types, defined as tokens:
-
-- STRING 
-- NUMBER
-- TRUE = true
-- FALSE = false
-- JNULL = null
+ Parser handles each element and adds it to AST basing on tokens. Each new object (starting with LEFT_BRACE) and array (starting with LEFT_BRACKET) are added as parent node of its values.
+ 
+ #### Abstract Syntax Tree -> JSON
+ 
+ JSON generation from Abstract Syntax Tree consists in converting each node to a field key : value
+ (element_name : element_value). If the node has children, they are printed recursively
+ in an object or array. if the element belongs to an array then element_name = "item"
+ and element_value represents the value.
 
 ### YAML
 _Oskar Pawica_
