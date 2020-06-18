@@ -9,6 +9,7 @@ The process is divided into two parts - lexing and parsing. Lexing is basically 
 
 ## Project structure
 ### XML
+_Filip Jachura_
 #### XML -> Abstract Syntax Tree
 
 For XML the tokens that can be output from lexer are listed below
@@ -25,6 +26,7 @@ Lexer is based on a finite state machine - it reads characters from the source u
 More TBD
 
 ### JSON
+_Joanna Kusek_
 #### JSON -> Abstract Syntax Tree
 
 Firstly we have to define tokens for JSON. A token is a structure that describes and categorizes an element from your text input. In case of JSON possible tokens are:
@@ -47,6 +49,7 @@ Possible value types, defined as tokens:
 - JNULL = null
 
 ### YAML
+_Oskar Pawica_
 #### YAML -> Abstract Syntax Tree
 
 Parsing YAML requires handling many language-specific elements, such as proper indentation, different kind of scalars (folded block scalars, linear block scalars, plain scalars, quoted scalars) and comments as well as arrays of elements etc. Compared to XML and JSON in most of the cases there are no bracket-wrappers for keys, values and children, therefore tokens must be split into different elements based on the combination of newlines and the size of indent in each line of document.
